@@ -1,8 +1,16 @@
 version: 2
 jobs:
-  build:
-    docker: # use the docker executor type; machine and macos executors are also supported
-      - image: circleci/node:4.8.2 # the primary container, where your job's commands are run
-    steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+ build:
+   machine: true
+   steps:
+     - checkout
+     # start proprietary DB using private Docker image
+     # with credentials stored in the UI
+     - run: |
+         docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+     # build the application image
+     - run: docker build -t company/app:$CIRCLE_BRANCH .
+
+     # deploy the image
+     - run: docker push company/app:$CIRCLE_BRANCH
