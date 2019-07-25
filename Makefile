@@ -1,6 +1,6 @@
-SERVICE =? docker_circleci
+SERVICE ?= docker_circleci
 GET_VERSION := pipenv run python scripts/get_version.py
-BUMP_PART =? minor
+BUMP_PART ?= minor
 
 .PHONY: bump-version
 bump-version:
